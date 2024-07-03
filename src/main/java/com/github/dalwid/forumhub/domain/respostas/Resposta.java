@@ -4,6 +4,7 @@ import com.github.dalwid.forumhub.domain.topicos.Topico;
 import com.github.dalwid.forumhub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Columns;
 
 import java.time.LocalDateTime;
 
