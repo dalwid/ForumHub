@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CursoService {
 
@@ -18,5 +20,9 @@ public class CursoService {
     public Curso cadastrarCurso(CursoDTO cursoDTO){
         var curso = new Curso(cursoDTO);
         return cursoRepository.save(curso);
+    }
+
+    public List<Curso> listarCursos(){
+        return cursoRepository.findAll();
     }
 }

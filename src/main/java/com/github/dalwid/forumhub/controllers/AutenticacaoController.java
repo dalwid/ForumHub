@@ -1,6 +1,9 @@
 package com.github.dalwid.forumhub.controllers;
 
 import com.github.dalwid.forumhub.domain.usuario.AuthenticationDTO;
+import com.github.dalwid.forumhub.domain.usuario.Usuario;
+import com.github.dalwid.forumhub.infra.security.tokens.DadosTokenJWTDTO;
+import com.github.dalwid.forumhub.infra.security.tokens.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +21,17 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid AuthenticationDTO authenticationDTO){
-        var token = new UsernamePasswordAuthenticationToken(authenticationDTO.email(), authenticationDTO.senha());
-        var Authentication =  manager.authenticate(token);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(authenticationDTO.email(), authenticationDTO.senha());
+        var authentication =  manager.authenticate(authenticationToken);
 
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
     }
 
 }
