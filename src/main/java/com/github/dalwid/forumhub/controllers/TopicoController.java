@@ -28,14 +28,12 @@ public class TopicoController {
     private TopicoRepository topicoRepository;
 
     @PostMapping
-    public ResponseEntity<Topico> cadastroTopicos(@RequestBody TopicosDTO topicosDTO, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<Topico> cadastroTopicos(@RequestBody  @Valid TopicosDTO topicosDTO, UriComponentsBuilder uriBuilder){
         var topico = new Topico(topicosDTO);
+        System.out.println(topico.getCurso());
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
 
         return ResponseEntity.created(uri).body(this.topicoService.cadastroTopicos(topicosDTO));
-
-
-
     }
 
 }

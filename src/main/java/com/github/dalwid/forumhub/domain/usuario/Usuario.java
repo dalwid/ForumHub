@@ -1,5 +1,6 @@
 package com.github.dalwid.forumhub.domain.usuario;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dalwid.forumhub.domain.cursos.Curso;
 import com.github.dalwid.forumhub.domain.respostas.Resposta;
 import com.github.dalwid.forumhub.domain.topicos.Topico;
@@ -9,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -21,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario extends Curso implements UserDetails{
+public class Usuario implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,13 +35,21 @@ public class Usuario extends Curso implements UserDetails{
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "perfil_id")
     )
-    private Set<Perfil> perfil;
+    private List<Perfil> perfil;
 
     @OneToMany(mappedBy = "usuario")
-    private Set<Resposta> resposta = new HashSet<>();
+    private List<Resposta> resposta = new LinkedList<>();
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "usuario")
-    private Set<Topico> topico = new HashSet<>();
+    private List<Topico> topico = new LinkedList<>();
+
+
+    public Usuario(UsuarioDTO usuarioDTO){
+        this.nome  = usuarioDTO.nome();
+        this.email = usuarioDTO.email();
+        this.senha = usuarioDTO.senha();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -80,9 +86,5 @@ public class Usuario extends Curso implements UserDetails{
         return true;
     }
 
-//    public Usuario(UsuarioDTO usuarioDTO){
-//        this.nome  = usuarioDTO.nome();
-//        this.email = usuarioDTO.email();
-//        this.senha = usuarioDTO.senha();
-//    }
+
 }

@@ -11,15 +11,17 @@ import com.github.dalwid.forumhub.repositories.TopicoRepository;
 import com.github.dalwid.forumhub.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.Serializable;
 import java.util.stream.Collectors;
 
 @Service
-public class TopicoService {
+public class TopicoService implements Serializable {
 
     @Autowired
     private TopicoRepository topicoRepository;
@@ -31,17 +33,14 @@ public class TopicoService {
     private CursoRepository cursoRepository;
 
 
-     Topico  topico = new Topico();
-
-
     @Transactional
     public Topico cadastroTopicos(TopicosDTO topicosDTO){
         Topico  topico = new Topico();
-
         topico.setTitulo(topicosDTO.titulo());
         topico.setMensagem(topicosDTO.mensagem());
-        topico.setCurso(cursoRepository.findById(topicosDTO.curso().getId()).get());
-        topico.setUsuario(usuarioRepository.findById(topicosDTO.usuario().getId()).get());
+
+        topico.setCurso(cursoRepository.findById(topicosDTO.curso()).get().getId());
+        topico.setUsuario(usuarioRepository.findById(topicosDTO.autor()).get().getId());
 
         return topicoRepository.save(topico);
     }

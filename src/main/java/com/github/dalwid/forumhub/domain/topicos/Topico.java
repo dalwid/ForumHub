@@ -1,11 +1,14 @@
 package com.github.dalwid.forumhub.domain.topicos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dalwid.forumhub.domain.cursos.Curso;
 import com.github.dalwid.forumhub.domain.respostas.Resposta;
 import com.github.dalwid.forumhub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,26 +29,29 @@ public class Topico {
 
     private String titulo;
     private String mensagem;
-    private String dataCriacao;
+    private LocalDateTime dataCriacao;
     private boolean status;
-
-    public Topico(TopicosDTO topicosDTO){
-        this.titulo   = topicosDTO.titulo();
-        this.mensagem = topicosDTO.mensagem();
-        this.usuario  = topicosDTO.usuario();
-        this.curso    = topicosDTO.curso();
-
-    }
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Long usuario;
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
-    private Curso curso;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Long curso;
 
     @OneToMany(mappedBy = "topico")
     private Set<Resposta> resposta = new HashSet<>();
+
+    public Topico(TopicosDTO topicosDTO){
+        this.titulo      = topicosDTO.titulo();
+        this.mensagem    = topicosDTO.mensagem();
+        this.dataCriacao = LocalDateTime.now();
+        this.curso       = topicosDTO.curso();
+        this.usuario     = topicosDTO.autor();
+
+    }
 
 }

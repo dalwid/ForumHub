@@ -19,16 +19,30 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
     private String categoria;
 
-    public Curso(CursoDTO curso){
-        this.nome      = curso.nome();
-        this.categoria = curso.categoria();
+    public Long getId() {
+        return id;
     }
 
-    @Setter
-    @OneToMany(mappedBy = "curso")
-    private Set<Topico> topico = new HashSet<>();
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 }
