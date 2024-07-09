@@ -29,6 +29,14 @@ public class Topico {
     private String dataCriacao;
     private boolean status;
 
+    public Topico(TopicosDTO topicosDTO){
+        this.titulo   = topicosDTO.titulo();
+        this.mensagem = topicosDTO.mensagem();
+        this.usuario  = topicosDTO.usuario();
+        this.curso    = topicosDTO.curso();
+
+    }
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

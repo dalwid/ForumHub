@@ -1,5 +1,6 @@
 package com.github.dalwid.forumhub.domain.usuario;
 
+import com.github.dalwid.forumhub.domain.cursos.Curso;
 import com.github.dalwid.forumhub.domain.respostas.Resposta;
 import com.github.dalwid.forumhub.domain.topicos.Topico;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario implements UserDetails{
+public class Usuario extends Curso implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,4 +79,10 @@ public class Usuario implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+//    public Usuario(UsuarioDTO usuarioDTO){
+//        this.nome  = usuarioDTO.nome();
+//        this.email = usuarioDTO.email();
+//        this.senha = usuarioDTO.senha();
+//    }
 }

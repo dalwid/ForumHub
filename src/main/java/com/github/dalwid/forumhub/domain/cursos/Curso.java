@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.DoubleStream;
 
 @Entity(name = "Curso")
 @Table(name = "cursos")
@@ -30,6 +31,4 @@ public class Curso {
     @Setter
     @OneToMany(mappedBy = "curso")
     private Set<Topico> topico = new HashSet<>();
-
-
 }
